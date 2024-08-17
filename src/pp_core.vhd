@@ -116,6 +116,7 @@ architecture behaviour of pp_core is
 	signal id_pc              : std_logic_vector(31 downto 0);
 	signal id_exception       : std_logic;
 	signal id_exception_cause : csr_exception_cause;
+	signal id_lf_sru  		  : std_logic;
 
 	-- Execute stage signals:
 	signal ex_dmem_address   : std_logic_vector(31 downto 0);
@@ -134,6 +135,9 @@ architecture behaviour of pp_core is
 	signal ex_mem_op         : memory_operation_type;
 	signal ex_mem_size       : memory_operation_size;
 	signal ex_exception_context : csr_exception_context;
+	-- signal cv_out1_ex_mem    : std_logic_vector(31 downto 0);					--
+	-- signal cv_out2_ex_mem    : std_logic_vector(31 downto 0);					--
+	signal ex_lf_sru_in		 : std_logic;
 
 	-- Memory stage signals:
 	signal mem_rd_write    : std_logic;
@@ -285,7 +289,8 @@ begin
 			csr_write => id_csr_write,
 			csr_use_imm => id_csr_use_immediate,
 			decode_exception => id_exception,
-			decode_exception_cause => id_exception_cause
+			decode_exception_cause => id_exception_cause,
+			lf_sru => id_lf_sru
 		);
 
 	------- Execute (EX) Stage -------
@@ -359,8 +364,11 @@ begin
 			wb_csr_write => wb_csr_write,
 			wb_exception => wb_exception,
 			mem_mem_op => mem_mem_op,
-			hazard_detected => hazard_detected
+			hazard_detected => hazard_detected,
+			lf_sru_in => ex_lf_sru_in
 		);
+	
+		ex_lf_sru_in <= id_lf_sru;
 
 	dmem_address <= ex_dmem_address when stall_mem = '0' else dmem_address_p;
 	dmem_data_size <= ex_dmem_data_size when stall_mem = '0' else dmem_data_size_p;
