@@ -461,8 +461,8 @@ begin
 	sru_instance: entity work.cv_sru
 		port map(
 			clk_in => clk,
-			first_word_in => rs1_forwarded,
-			second_word_in => rs2_forwarded,
+			first_word_in => rs1_data,
+			second_word_in => rs2_data,
 			funct3_in => funct3,
 			data_out => cv_sru_data_out
 		);

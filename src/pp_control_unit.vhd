@@ -241,7 +241,7 @@ begin
 						mem_op <= MEMOP_TYPE_INVALID;
 				end case;
 			when b"01010" => -- lfsru (load from SRU (to memory))
-				mem_op <= MEMOP_TYPE_LOAD;
+				mem_op <= MEMOP_TYPE_STORE;
 				mem_size <= MEMOP_SIZE_WORD;
 			when b"01000" => -- Store instructions
 				case funct3 is

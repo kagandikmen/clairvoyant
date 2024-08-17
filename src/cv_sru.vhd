@@ -37,7 +37,7 @@ begin
                     tmp17                                                                  : std_logic_vector(7 downto 0);
     begin
         if rising_edge(clk_in) then
-            if funct3_in = "000" then --enhance
+            if funct3_in = "111" then --enhance
                 
                 if ctr = "000" then
                     storage_unit(0)(0) <= "00000000";
@@ -109,15 +109,15 @@ begin
         end if;
     end process;
 
-    process(funct3_in)
+    process(funct3_in)  -- select between bytes to read from SRU buffer to the memory
     begin
-        if funct3_in = "100" then
+        if funct3_in = "000" then
             data_out <= storage_unit(0)(0) & storage_unit(0)(1) & storage_unit(0)(2) & storage_unit(0)(3);
-        elsif funct3_in = "101" then
+        elsif funct3_in = "001" then
             data_out <= storage_unit(0)(4) & storage_unit(0)(5) & storage_unit(0)(6) & storage_unit(0)(7);
-        elsif funct3_in = "110" then
+        elsif funct3_in = "010" then
             data_out <= storage_unit(1)(0) & storage_unit(1)(1) & storage_unit(1)(2) & storage_unit(1)(3);
-        elsif funct3_in = "111" then
+        elsif funct3_in = "011" then
             data_out <= storage_unit(1)(4) & storage_unit(1)(5) & storage_unit(1)(6) & storage_unit(1)(7);
         else
             data_out <= (others => '0');
