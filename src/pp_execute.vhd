@@ -167,6 +167,8 @@ architecture behaviour of pp_execute is
 	signal load_hazard_detected, csr_hazard_detected : std_logic;
 
 	signal cv_sru_data_out : std_logic_vector(31 downto 0);
+
+	signal lf_sru : std_logic;
 begin
 
 	-- Register values should not be latched in by a clocked process,
@@ -207,7 +209,7 @@ begin
 
 	dmem_address <= alu_result when (mem_op /= MEMOP_TYPE_NONE and mem_op /= MEMOP_TYPE_INVALID) and exception_taken = '0'
 		else (others => '0');
-	dmem_data_out <= cv_sru_data_out when (lf_sru_in = '1') else rs2_forwarded;
+	dmem_data_out <= cv_sru_data_out when (lf_sru = '1') else rs2_forwarded;
 	dmem_write_req <= '1' when mem_op = MEMOP_TYPE_STORE and exception_taken = '0' else '0';
 	dmem_read_req <= '1' when memop_is_load(mem_op) and exception_taken = '0' else '0';
 
@@ -260,6 +262,8 @@ begin
 				-- Instruction decoder exceptions:
 				decode_exception <= decode_exception_in;
 				decode_exception_cause <= decode_exception_cause_in;
+
+				lf_sru <= lf_sru_in;
 			end if;
 		end if;
 	end process pipeline_register;
@@ -461,8 +465,8 @@ begin
 	sru_instance: entity work.cv_sru
 		port map(
 			clk_in => clk,
-			first_word_in => rs1_data,
-			second_word_in => rs2_data,
+			first_word_in => rs1_forwarded,
+			second_word_in => rs2_forwarded,
 			funct3_in => funct3,
 			data_out => cv_sru_data_out
 		);

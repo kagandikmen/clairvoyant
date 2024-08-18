@@ -131,6 +131,14 @@ begin
 				alu_x_src <= ALU_SRC_CSR;
 				alu_y_src <= ALU_SRC_NULL;
 				alu_op <= ALU_ADD;
+			when b"00010" => -- CUSTOM0
+				alu_x_src <= ALU_SRC_REG;
+				alu_y_src <= ALU_SRC_REG;
+				alu_op <= ALU_NOP;
+			when b"01010" => -- CUSTOM1
+				alu_x_src <= ALU_SRC_REG;
+				alu_y_src <= ALU_SRC_IMM;
+				alu_op <= ALU_ADD;
 			when others =>
 				alu_x_src <= ALU_SRC_REG;
 				alu_y_src <= ALU_SRC_REG;
