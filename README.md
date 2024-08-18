@@ -1,52 +1,27 @@
-# The Potato Processor
+# clairvoyant
 
-![Processor architecture overview diagramme](https://github.com/skordal/potato/blob/master/docs/diagram.png?raw=true)
+clairvoyant is:
 
-The Potato Processor is a simple RISC-V processor written in VHDL for use in FPGAs. It implements the 32-bit integer subset
-of the RISC-V Specification version 2.0 and supports large parts of the the machine mode specified in the RISC-V Privileged
-Architecture Specification v1.10.
+- an enhanced version of [The Potato Processor](https://github.com/skordal/potato) with an image super-resolution accelerator
+- my FPGA Ignite 2024 Hackathon project
 
-The processor has been tested on an Arty board using the example SoC design provided in the `example/` directory
-and the applications found in the `software/` directory. Synthesis and implementation has been tested on various versions
-of Xilinx' Vivado toolchain, most recently version 2019.2.
+## Setup
 
-## Features
+Because the super-resolution functionality uses custom instructions, you need to use clairvoyant's own custom RISC-V compiler, which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain). The custom compiler will be made accessible in the near future.
 
-* Supports the complete 32-bit RISC-V base integer ISA (RV32I) version 2.0
-* Supports large parts of the machine mode defined in the RISC-V Privileged Architecture version 1.10
-* Supports up to 8 individually maskable external interrupts (IRQs)
-* 5-stage "classic" RISC pipeline
-* Optional instruction cache
-* Supports the Wishbone bus, version B4
+## Current Status of the Project
 
-## Peripherals
+Hardware desciption, custom instructions and the tests are considered implemented and fully functional as of 2024-08-18.  
 
-The project includes a variety of Wishbone-compatible peripherals for use in system-on-chip designs based on the Potato processor.
-The main peripherals are:
+## Known Issues
 
-* Timer - a 32-bit timer with compare interrupt
-* GPIO - a configurable-width generic GPIO module
-* Memory - a block RAM memory module
-* UART - a UART module with hardware FIFOs, configurable baudrate and RX/TX interrupts
+- Yet no function libraries enabling the use of the super-resolution functionality are implemented as of 2024-08-18.
 
-## Quick Start/Instantiating
+## Contributing
 
-To instantiate the processor, add the source files from the `src/` folder to your project. Use the `pp_potato`
-entity to instantiate a processor with a Wishbone interface. Some generics are provided to configure the processor core.
+Pull requests, suggestions, bug fixes etc. are all welcome.
 
-An example System-on-Chip for the Arty development board can be found in the `example/` directory of the source repository.
+## License
 
-## Compiler Toolchain
-
-To program the processor, you need an appropriate compiler toolchain. To compile a working toolchain, go to the
-[RISCV GNU toolchain repository](https://github.com/riscv/riscv-gnu-toolchain) and clone the project. Compile and install
-the toolchain using the following commands (note that `make` will both build and install the toolchain, ensure that the
-destination directory is writeable by your user):
-
-    ./configure --prefix=/opt/riscv-toolchain --with-abi=ilp32 --with-arch=rv32i
-    make
-
-## Reporting bugs and issues
-
-Bugs and issues related to the Potato processor can be reported on the project's [GitHub page](https://github.com/skordal/potato).
+Both my own work and The Potato Processor are released under BSD-3-Clause license. No copyright infringement intended. See [`LICENSE`](LICENSE) for details.
 

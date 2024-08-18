@@ -28,6 +28,10 @@ begin
 				immediate <= (31 downto 12 => instruction(31)) & instruction(7) & instruction(30 downto 25) & instruction(11 downto 8) & '0';
 			when b"01000" => -- S type
 				immediate <= (31 downto 11 => instruction(31)) & instruction(30 downto 25) & instruction(11 downto 7);
+			when b"00010" => -- CUSTOM0
+				immediate <= (31 downto 11 => instruction(31)) & instruction(30 downto 25) & instruction(11 downto 7);
+			when b"01010" => -- CUSTOM1
+				immediate <= (31 downto 11 => instruction(31)) & instruction(30 downto 25) & instruction(11 downto 7);
 			when others =>
 				immediate <= (others => '0');
 		end case;

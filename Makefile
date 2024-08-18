@@ -28,7 +28,8 @@ SOURCE_FILES := \
 	src/pp_utilities.vhd \
 	src/pp_wb_arbiter.vhd \
 	src/pp_wb_adapter.vhd \
-	src/pp_writeback.vhd
+	src/pp_writeback.vhd \
+	src/cv_sru.vhd
 TESTBENCHES := \
 	testbenches/tb_processor.vhd \
 	testbenches/tb_soc.vhd \
@@ -70,6 +71,7 @@ RISCV_TESTS += \
 	sra \
 	srai \
 	srl \
+	sru_instrs \
 	sub \
 	sw \
 	xor \
