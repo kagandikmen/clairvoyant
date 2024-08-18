@@ -1,4 +1,5 @@
 # Constraints for Xilinx' PYNQ-Z1 Board
+# Copyright (c) 2024, Kagan Dikmen
 
 # 100 MHz clock signal
 set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports clk]

@@ -2,6 +2,7 @@
 -- Created: 2024-08-15
 -- Modified: 2024-08-17 (status: unknown)
 -- Author: Kagan Dikmen (kagan.dikmen@tum.de)
+-- Copyright (c) 2024, Kagan Dikmen
 
 library ieee;
 use ieee.std_logic_1164.all;

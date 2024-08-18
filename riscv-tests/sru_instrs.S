@@ -1,3 +1,12 @@
+# See LICENSE for license details.
+
+#*****************************************************************************
+# sru_instrs.S
+#-----------------------------------------------------------------------------
+#
+# Test custom SRU instructions (enh, lf0, lf1, lf2, lf3).
+#
+
 #include "riscv_test.h"
 #include "test_macros.h"
 
