@@ -7,11 +7,11 @@ clairvoyant is:
 
 ## Setup
 
-Because the super-resolution functionality uses custom instructions, you need to use clairvoyant's own custom RISC-V compiler, which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain). The custom compiler will be made accessible in the near future.
+Because the super-resolution functionality uses custom instructions, you need to use [clairvoyant's own custom RISC-V compiler](https://github.com/kagandikmen/clairvoyant-compiler), which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain).
 
 ## Current Status of the Project
 
-Hardware desciption, custom instructions and the tests are considered implemented and fully functional as of 2024-08-18.  
+Hardware description, custom instructions and the tests are considered implemented and fully functional as of 2024-08-18.  
 
 ## Known Issues
 
