@@ -84,6 +84,7 @@ LOCAL_TESTS += \
 # Compiler flags to use when building tests:
 TARGET_CFLAGS += -march=rv32i_zicsr -Wall -O0
 TARGET_LDFLAGS +=
+MODE ?=
 
 all: potato.prj run-tests run-soc-tests
 
@@ -115,7 +116,14 @@ run-tests: potato.prj compile-tests
 		test -f tests-build/$$test-dmem.hex && DMEM_FILENAME="tests-build/$$test-dmem.hex"; \
 		xelab tb_processor -generic_top "IMEM_FILENAME=tests-build/$$test-imem.hex" -generic_top "DMEM_FILENAME=$$DMEM_FILENAME" -prj potato.prj > /dev/null; \
 		xsim tb_processor -R --onfinish quit > tests-build/$$test.results; \
-		cat tests-build/$$test.results | awk '/Note:/ {print}' | sed 's/Note://' | awk '/Success|Failure/ {print}'; \
+		RESULT=$$(cat tests-build/$$test.results | awk '/Note:/ {print}' | sed 's/Note://' | awk '/Success|Failure/ {print}'); \
+		echo "$$RESULT"; \
+		if [ "$(MODE)" = "ci" ] || [ "$(MODE)" = "CI" ]; then \
+			if echo "$$RESULT" | grep -q 'Failure'; then \
+				echo "Test $$test failed!"; \
+				exit 1; \
+			fi; \
+		fi; \
 	done
 
 run-soc-tests: potato.prj compile-tests
@@ -125,7 +133,14 @@ run-soc-tests: potato.prj compile-tests
 		test -f tests-build/$$test-dmem.hex && DMEM_FILENAME="tests-build/$$test-dmem.hex"; \
 		xelab tb_soc -generic_top "IMEM_FILENAME=tests-build/$$test-imem.hex" -generic_top "DMEM_FILENAME=$$DMEM_FILENAME" -prj potato.prj > /dev/null; \
 		xsim tb_soc -R --onfinish quit > tests-build/$$test.results-soc; \
-		cat tests-build/$$test.results-soc | awk '/Note:/ {print}' | sed 's/Note://' | awk '/Success|Failure/ {print}'; \
+		RESULT=$$(cat tests-build/$$test.results-soc | awk '/Note:/ {print}' | sed 's/Note://' | awk '/Success|Failure/ {print}'); \
+		echo "$$RESULT"; \
+		if [ "$(MODE)" = "ci" ] || [ "$(MODE)" = "CI" ]; then \
+			if echo "$$RESULT" | grep -q 'Failure'; then \
+				echo "Test $$test failed!"; \
+				exit 1; \
+			fi; \
+		fi; \
 	done
 
 remove-xilinx-garbage:

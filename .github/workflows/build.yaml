@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up the environment
+        run: |
+          sudo ./.github/setup-ci.sh
+
+      - name: Build the toolchain
+        run: |
+          sudo ./.github/build-toolchain.sh
+
+      - name: Run the tests
+        run: |
+          make MODE=ci
+
+      - name: Clean
+        run: |
+          make clean
