@@ -11,7 +11,7 @@ Because the super-resolution functionality uses custom instructions, you need to
 
 ## Current Status of the Project
 
-Hardware description, custom instructions and the tests are considered implemented and fully functional as of 2024-08-18.  
+Hardware description, custom instructions and the tests are considered implemented and fully functional as of 2024-08-18.
 
 ## Known Issues
 
