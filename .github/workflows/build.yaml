@@ -16,10 +16,12 @@ jobs:
     steps:
       - name: Set up the environment
         run: |
+          sudo chmod +x ./.github/setup-ci.sh
           sudo ./.github/setup-ci.sh
 
       - name: Build the toolchain
         run: |
+          sudo chmod +x ./.github/setup-ci.sh
           sudo ./.github/build-toolchain.sh
 
       - name: Run the tests
