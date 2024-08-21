@@ -16,16 +16,21 @@ jobs:
     steps:
       - name: Set up the environment
         run: |
+          pwd
+          ls -l
           sudo chmod +x ./.github/setup-ci.sh
           sudo ./.github/setup-ci.sh
+          pwd
 
       - name: Build the toolchain
         run: |
+          pwd
           sudo chmod +x ./.github/setup-ci.sh
           sudo ./.github/build-toolchain.sh
 
       - name: Run the tests
         run: |
+          pwd
           make MODE=ci
 
       - name: Clean
