@@ -8,9 +8,6 @@
 
 #include <stdint.h>
 
-#include "platform.h"
-#include "uart.h"
-
 int main() 
 {
     
@@ -182,12 +179,10 @@ int main()
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         
-    }
+    };
 
-    asm volatile(
-                "la x28, original_image\n\t"
-                "la x29, enhanced_image"
-                );
+    asm volatile("add x28, %[a], x0"::[a] "r" (original_image):);
+    asm volatile("add x29, %[a], x0"::[a] "r" (enhanced_image));
 
     for(int i=0; i<32; i++){
         for(int j=0; j<32; j++) {
@@ -206,13 +201,16 @@ int main()
         asm volatile("addi x29, x29, 0x40");
     }
 
-    asm volatile(
-                "la x28, original_image\n\t"
-                "la x29, enhanced_image"
-                );
+    asm volatile("add x28, %[a], x0"::[a] "r" (original_image):);
+    asm volatile("add x29, %[a], x0"::[a] "r" (enhanced_image));
 
-    // Here comes the UART logic
 
-    uart_tx_string(&uart0, enhanced_image);
+    // UART logic
+
+    // uart_tx_string(&uart0, "Transmission starts...\n");
+
+    // uart_tx_string(&uart0, enhanced_image);
+
+    // uart_tx_string(&uart0, "Transmission ended!\n");
 
 }
