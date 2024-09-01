@@ -1,6 +1,6 @@
-// Test function for the super-resolution functionality of clairvoyant
+// Demo program for the super-resolution functionality of clairvoyant
 // Created: 2024-08-21
-// Modified: 2024-08-21 (status: tested, working)
+// Modified: 2024-09-01 (status: tested, working)
 // Author: Kagan Dikmen (kagan.dikmen@tum.de)
 
 // Copyright (c) 2024, Kagan Dikmen

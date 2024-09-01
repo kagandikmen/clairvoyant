@@ -1,6 +1,6 @@
-# Makefile for PYNQ-Z1 tests
+# Makefile for super-resolution demo
 # Created: 2024-08-30
-# Modified: 2024-08-20 (status: tested, working)
+# Modified: 2024-09-01 (status: tested, working)
 
 # Copyright (c) 2024 Kagan Dikmen
 # See LICENSE for details
