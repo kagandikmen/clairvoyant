@@ -62,7 +62,8 @@ entity pp_decode is
 		decode_exception_cause : out csr_exception_cause;
 
 		-- SRU
-		lf_sru			: out std_logic		-- set if loading from SRU buffer to RF
+		lf_sru			: out std_logic;	-- set if loading from SRU buffer to RF
+		en_enh			: out std_logic
 	);
 
 end entity pp_decode;
@@ -138,7 +139,8 @@ begin
 			decode_exception_cause => decode_exception_cause,
 			csr_write => csr_write,
 			csr_imm => csr_use_imm,
-			lf_sru => lf_sru
+			lf_sru => lf_sru,
+			en_enh => en_enh
 		);
 
 end architecture behaviour;

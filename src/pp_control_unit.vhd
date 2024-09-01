@@ -47,7 +47,8 @@ entity pp_control_unit is
 		mem_size : out memory_operation_size; --! Size of the memory operation to perform.
 
 		-- SRU
-		lf_sru	 : out std_logic 	-- set if loading from SRU buffer to RF
+		lf_sru	 : out std_logic;	-- set if loading from SRU buffer to RF
+		en_enh	 : out std_logic
 	);
 end entity pp_control_unit;
 
@@ -88,64 +89,75 @@ begin
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"00101" => -- Add upper immediate to PC
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"11011" => -- Jump and link
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_JUMP;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"11001" => -- Jump and link register
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_JUMP_INDIRECT;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"11000" => -- Branch operations
 				rd_write <= '0';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_CONDITIONAL;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"00000" => -- Load instructions
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"01000" => -- Store instructions
 				rd_write <= '0';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"00100" => -- Register-immediate operations
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"01100" => -- Register-register operations
 				rd_write <= '1';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"00011" => -- Fence instructions, ignored
 				rd_write <= '0';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 			when b"11100" => -- System instructions
 				if funct3 = b"000" then
 					rd_write <= '0';
 					lf_sru <= '0';
+					en_enh <= '0';
 
 					if funct12 = x"000" then
 						exception <= '1';
@@ -174,6 +186,7 @@ begin
 					exception_cause <= CSR_CAUSE_NONE;
 					branch <= BRANCH_NONE;
 					lf_sru <= '0';
+					en_enh <= '0';
 				end if;
 			when b"00010" => -- CUSTOM0 for "enh" (enhance)
 				rd_write <= '0';
@@ -181,18 +194,21 @@ begin
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '1';
 			when b"01010" => -- CUSTOM1 for "lfsru" (load from SRU)
 				rd_write <= '0';
 				exception <= '0';
 				exception_cause <= CSR_CAUSE_NONE;
 				branch <= BRANCH_NONE;
 				lf_sru <= '1';
+				en_enh <= '0';
 			when others =>
 				rd_write <= '0';
 				exception <= '1';
 				exception_cause <= CSR_CAUSE_INVALID_INSTR;
 				branch <= BRANCH_NONE;
 				lf_sru <= '0';
+				en_enh <= '0';
 		end case;
 	end process decode_ctrl;
 

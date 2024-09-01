@@ -116,7 +116,8 @@ entity pp_execute is
 		hazard_detected : out std_logic;
 
 		-- SRU
-		lf_sru_in		: in std_logic
+		lf_sru_in		: in std_logic;
+		en_enh_in	    : in std_logic
 	);
 end entity pp_execute;
 
@@ -169,6 +170,7 @@ architecture behaviour of pp_execute is
 	signal cv_sru_data_out : std_logic_vector(31 downto 0);
 
 	signal lf_sru : std_logic;
+	signal en_enh : std_logic;
 begin
 
 	-- Register values should not be latched in by a clocked process,
@@ -264,6 +266,7 @@ begin
 				decode_exception_cause <= decode_exception_cause_in;
 
 				lf_sru <= lf_sru_in;
+				en_enh <= en_enh_in;
 			end if;
 		end if;
 	end process pipeline_register;
@@ -465,9 +468,11 @@ begin
 	sru_instance: entity work.cv_sru
 		port map(
 			clk_in => clk,
+			reset_in => reset,
 			first_word_in => rs1_forwarded,
 			second_word_in => rs2_forwarded,
 			funct3_in => funct3,
+			en_enh_in => en_enh,
 			data_out => cv_sru_data_out
 		);
 
