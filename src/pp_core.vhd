@@ -117,6 +117,7 @@ architecture behaviour of pp_core is
 	signal id_exception       : std_logic;
 	signal id_exception_cause : csr_exception_cause;
 	signal id_lf_sru  		  : std_logic;
+	signal id2ex_en_enh		  : std_logic;
 
 	-- Execute stage signals:
 	signal ex_dmem_address   : std_logic_vector(31 downto 0);
@@ -290,7 +291,8 @@ begin
 			csr_use_imm => id_csr_use_immediate,
 			decode_exception => id_exception,
 			decode_exception_cause => id_exception_cause,
-			lf_sru => id_lf_sru
+			lf_sru => id_lf_sru,
+			en_enh => id2ex_en_enh
 		);
 
 	------- Execute (EX) Stage -------
@@ -365,7 +367,8 @@ begin
 			wb_exception => wb_exception,
 			mem_mem_op => mem_mem_op,
 			hazard_detected => hazard_detected,
-			lf_sru_in => ex_lf_sru_in
+			lf_sru_in => ex_lf_sru_in,
+			en_enh_in => id2ex_en_enh
 		);
 	
 		ex_lf_sru_in <= id_lf_sru;
