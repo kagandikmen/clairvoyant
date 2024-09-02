@@ -36,7 +36,7 @@ int main()
     asm volatile("add x29, x0, %[a]"::[a] "r" (enhanced_image):);
     
     
-    for(int i=0; i<63; i++){
+    for(int i=0; i<64; i++){
         for(int j=0; j<16; j++) {
             asm volatile(
                         "lw x30, 0(x28)\n\t"
@@ -50,16 +50,24 @@ int main()
                         "nop\n\t"
                         "lf1 4(x29)\n\t"
                         "nop\n\t"
-                        "nop\n\t"
-                        "lf2 128(x29)\n\t"
-                        "nop\n\t"
-                        "nop\n\t"
-                        "lf3 132(x29)\n\t"
-                        "nop\n\t"
-                        "nop\n\t"
+                        "nop"
+                        );
+            if(i != 63) // Corner case: last row
+            {
+                asm volatile(
+                            "lf2 128(x29)\n\t"
+                            "nop\n\t"
+                            "nop\n\t"
+                            "lf3 132(x29)\n\t"
+                            "nop\n\t"
+                            "nop"
+                            );
+            }
+            asm volatile(
                         "addi x28, x28, 0x4\n\t"
                         "addi x29, x29, 0x8"
                         );
+            
         }
         asm volatile("addi x29, x29, 0x80");
     }
