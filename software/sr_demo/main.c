@@ -41,26 +41,15 @@ int main()
             asm volatile(
                         "lw x30, 0(x28)\n\t"
                         "lw x31, 64(x28)\n\t"
-                        "nop\n\t"
                         "enh x30, x31\n\t"
-                        "nop\n\t"
-                        "nop\n\t"
                         "lf0 0(x29)\n\t"
-                        "nop\n\t"
-                        "nop\n\t"
-                        "lf1 4(x29)\n\t"
-                        "nop\n\t"
-                        "nop"
+                        "lf1 4(x29)"
                         );
             if(i != 63) // Corner case: last row
             {
                 asm volatile(
                             "lf2 128(x29)\n\t"
-                            "nop\n\t"
-                            "nop\n\t"
-                            "lf3 132(x29)\n\t"
-                            "nop\n\t"
-                            "nop"
+                            "lf3 132(x29)"
                             );
             }
             asm volatile(
