@@ -10,8 +10,8 @@
 #include "platform.h"
 #include "uart.h"
 
-#define SOURCE_WIDTH 32
-#define SOURCE_HEIGHT 32
+#define SOURCE_WIDTH 64
+#define SOURCE_HEIGHT 64
 
 static struct uart uart0;
 
@@ -31,6 +31,8 @@ int main()
     unsigned char original_image [num_source_pixels] = {};
 
     unsigned char enhanced_image [num_source_pixels*4] = {};
+
+    unsigned char enhanced_image_cropped [(SOURCE_WIDTH*2-1)*(SOURCE_HEIGHT*2-1)] = {};
 
     for(int i = 0; i < num_source_pixels; i++){
 		while(uart_rx_fifo_empty(&uart0));
@@ -68,8 +70,19 @@ int main()
         }
         asm volatile("add x29, x29, %[a]"::[a] "r" (SOURCE_WIDTH*2));
     }
-
-    uart_tx_array(&uart0, enhanced_image, num_source_pixels*4);
     
+    int index = 0;
+
+    for(int i=0; i<(SOURCE_HEIGHT*2-1); i++)
+    {
+        for(int j=1; j<(SOURCE_WIDTH*2); j++)
+        {
+            enhanced_image_cropped[index] = enhanced_image[i*(SOURCE_WIDTH*2)+j];
+            index++;
+        }
+    }
+    
+    uart_tx_array(&uart0, enhanced_image_cropped, (SOURCE_WIDTH*2-1)*(SOURCE_HEIGHT*2-1));
+
     return 0;
 }
