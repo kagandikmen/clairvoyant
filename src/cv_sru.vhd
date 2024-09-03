@@ -32,7 +32,7 @@ architecture behaviour of cv_sru is
     --type overlap_buffer is array(0 to 2) of std_logic_vector(7 downto 0);
     signal overlap_buf1      : std_logic_vector(7 downto 0);
     signal overlap_buf2      : std_logic_vector(7 downto 0);
-    signal ctr               : unsigned(3 downto 0); -- := (others => '0');
+    signal ctr               : unsigned(15 downto 0); -- := (others => '0');
 begin
     process (clk_in)
         variable    tmp1,   tmp2,   tmp3,   tmp4,   tmp5,   tmp6,   tmp7,   tmp8, 
@@ -45,7 +45,15 @@ begin
                 overlap_buf1    <= (others => '0');
                 overlap_buf2    <= (others => '0');
                 ctr             <= (others => '0');
-            elsif en_enh_in = '1' then --enhance
+                
+            elsif en_enh_in = '1' and funct3_in = "110" then    -- reset counter
+                
+                storage_unit <= storage_unit;
+                overlap_buf1 <= overlap_buf1;
+                overlap_buf2 <= overlap_buf2;
+                ctr <= (others => '0');
+                
+            elsif en_enh_in = '1' and funct3_in = "111" then    -- enhance
                 
                 if ctr = 0 then
                     storage_unit(0)(0)  <= "00000000";
@@ -107,6 +115,7 @@ begin
                 overlap_buf2      <= second_word_in (31 downto 24);
 
                 ctr <= ctr + 1;
+                
             else
                 storage_unit <= storage_unit;
                 overlap_buf1 <= overlap_buf1;
