@@ -37,6 +37,7 @@ int main()
     
     
     for(int i=0; i<64; i++){
+        asm volatile("ctrst");
         for(int j=0; j<16; j++) {
             asm volatile(
                         "lw x30, 0(x28)\n\t"
