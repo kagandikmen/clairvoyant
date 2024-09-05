@@ -2,14 +2,14 @@
 
 clairvoyant is:
 
-- an enhanced version of [The Potato Processor](https://github.com/skordal/potato) with a greyscale image super-resolution accelerator
+- a RISC-V image super-resolution core built on [The Potato Processor](https://github.com/skordal/potato)
 - my FPGA Ignite 2024 Hackathon project
 
 ## In Action
 
-**Original Image**                     | **Enhanced Image**
-:-------------------------------------:|:-------------------------------------:
-![birdie original](docs/birdie.png) | ![birdie_enhanced](docs/birdie_enhanced.png)
+**Original Image**                     |**Original Image Resized**             | **Enhanced Image**
+:-------------------------------------:|:-------------------------------------:|:-------------------------------------:
+![birdie original](docs/birdie.png)    | ![birdie resized](docs/birdie_resized.png)   | ![birdie_enhanced](docs/birdie_enhanced.png)
 
 ## Setup
 
@@ -22,7 +22,6 @@ Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2024-0
 ### Next Steps
 
 - Function libraries allowing easier access to the super-resolution functionality
-- Optimisations in the super-resolution unit (SRU), mainly to make it more generic
 
 ## Contributing
 
