@@ -2,20 +2,22 @@
 
 clairvoyant is:
 
-- a RISC-V image super-resolution core built on [The Potato Processor](https://github.com/skordal/potato)
-- my FPGA Ignite 2024 Hackathon project
+- A RISC-V image super-resolution core built on [The Potato Processor](https://github.com/skordal/potato)
+- My FPGA Ignite 2024 Hackathon project
 
 ## In Action
 
-**Original Image**                     |**Image Resized w/ ImageMagick**             | **Image Enhanced w/ clairvoyant**
+**Original Image**                     |**Image Resized w/ ImageMagick***             | **Image Enhanced w/ clairvoyant**
 :-------------------------------------:|:-------------------------------------:|:-------------------------------------:
 ![birdie original](docs/birdie.png)    | ![birdie resized](docs/birdie_resized.png)   | ![birdie_enhanced](docs/birdie_enhanced.png)
 
 ### Closer Look
 
-**Image Resized w/ ImageMagick** | **Image Enhanced w/ clairvoyant**
+**Image Resized w/ ImageMagick*** | **Image Enhanced w/ clairvoyant**
 :-------------------------------:|:-----------------------------------:
 ![birdie resized closer look](docs/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/birdie_enhanced_closerlook.png)
+
+* ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, ImageMagick uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
 
 ## Setup
 
@@ -27,7 +29,7 @@ Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2024-0
 
 ### Next Steps
 
-- Function libraries allowing easier access to the super-resolution functionality
+- Function libraries to facilitate access to the super-resolution functionality
 
 ## Contributing
 
@@ -35,5 +37,5 @@ Pull requests, suggestions, bug fixes etc. are all welcome.
 
 ## License
 
-Both clairvoyant and The Potato Processor are released under BSD-3-Clause license. No copyright infringement intended. See [`LICENSE`](LICENSE) for details.
+Both clairvoyant and The Potato Processor are released under BSD-3-Clause license. See [`LICENSE`](LICENSE) for details.
 
