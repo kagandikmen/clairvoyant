@@ -17,7 +17,8 @@ clairvoyant is:
 :-------------------------------:|:-----------------------------------:
 ![birdie resized closer look](docs/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/birdie_enhanced_closerlook.png)
 
-* ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, ImageMagick uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
+
+\* ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, ImageMagick uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
 
 ## Setup
 
