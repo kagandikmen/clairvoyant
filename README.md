@@ -7,9 +7,15 @@ clairvoyant is:
 
 ## In Action
 
-**Original Image**                     |**Original Image Resized**             | **Enhanced Image**
+**Original Image**                     |**Image Resized w/ ImageMagick**             | **Image Enhanced w/ clairvoyant**
 :-------------------------------------:|:-------------------------------------:|:-------------------------------------:
 ![birdie original](docs/birdie.png)    | ![birdie resized](docs/birdie_resized.png)   | ![birdie_enhanced](docs/birdie_enhanced.png)
+
+### Closer Look
+
+**Image Resized w/ ImageMagick** | **Image Enhanced w/ clairvoyant**
+:-------------------------------:|:-----------------------------------:
+![birdie resized closer look](docs/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/birdie_enhanced_closerlook.png)
 
 ## Setup
 
