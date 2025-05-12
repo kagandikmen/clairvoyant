@@ -1,9 +1,9 @@
 // Demo program for the super-resolution functionality of clairvoyant
 // Created: 2024-08-21
-// Modified: 2024-09-01 (status: tested, working)
+// Modified: 2025-05-12 (status: tested, working)
 // Author: Kagan Dikmen (kagan.dikmen@tum.de)
 
-// Copyright (c) 2024, Kagan Dikmen
+// Copyright (c) 2025, Kagan Dikmen
 // See LICENSE for details
 
 #include <stdint.h>
@@ -14,6 +14,9 @@
 #define SOURCE_HEIGHT 64
 
 static struct uart uart0;
+
+// sequence to initiate data transfer
+uint8_t seq[4] = {0xAA, 0x55, 0xAA, 0x55};
 
 void exception_handler(uint32_t cause, void * epc, void * regbase)
 {
@@ -33,6 +36,28 @@ int main()
     unsigned char enhanced_image [num_source_pixels*4] = {};
 
     unsigned char enhanced_image_cropped [(SOURCE_WIDTH*2-1)*(SOURCE_HEIGHT*2-1)] = {};
+
+    uint8_t key;
+
+    while(1) {
+        while(uart_rx_fifo_empty(&uart0));
+        key = uart_rx(&uart0);
+        if(key != seq[0]) continue;
+
+        while(uart_rx_fifo_empty(&uart0));
+        key = uart_rx(&uart0);
+        if(key != seq[1]) continue;
+
+        while(uart_rx_fifo_empty(&uart0));
+        key = uart_rx(&uart0);
+        if(key != seq[2]) continue;
+
+        while(uart_rx_fifo_empty(&uart0));
+        key = uart_rx(&uart0);
+        if(key != seq[3]) continue;
+        
+        break;
+    }
 
     for(int i = 0; i < num_source_pixels; i++){
 		while(uart_rx_fifo_empty(&uart0));
