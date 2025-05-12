@@ -13,6 +13,8 @@
 #define SOURCE_WIDTH 64
 #define SOURCE_HEIGHT 64
 
+#define CV          // comment if you want to run the base version
+
 static struct uart uart0;
 
 // sequence to initiate data transfer
@@ -64,6 +66,7 @@ int main()
 		*((volatile uint8_t*)(original_image + i)) = uart_rx(&uart0);
 	}
     
+#ifdef CV
     asm volatile("add x28, x0, %[a]"::[a] "r" (original_image):);
     asm volatile("add x29, x0, %[a]"::[a] "r" (enhanced_image):);
     
@@ -106,6 +109,22 @@ int main()
             index++;
         }
     }
+#else
+
+    int index = 0;
+
+    for(int i=0; i<2*SOURCE_HEIGHT-1; i++) {
+        for(int j=0; j<2*SOURCE_WIDTH-1; j++) {
+            if(i%2 == 0 && j%2 == 0) {
+                enhanced_image_cropped[index] = (original_image[(i/2)*SOURCE_WIDTH+(j/2)] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH]) >> 1;
+            } else {
+                enhanced_image_cropped[index] = (original_image[(i/2)*SOURCE_WIDTH+(j/2)] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+1] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH+1]) >> 2;
+            }
+            index++;
+        }
+    }
+
+#endif
     
     uart_tx_array(&uart0, enhanced_image_cropped, (SOURCE_WIDTH*2-1)*(SOURCE_HEIGHT*2-1));
 
