@@ -1,6 +1,6 @@
 -- Super-resolution Unit (SRU) of clairvoyant
 -- Created: 2024-08-15
--- Modified: 2024-09-01 (status: tested, working)
+-- Modified: 2025-05-12 (status: tested, working)
 -- Author: Kagan Dikmen (kagan.dikmen@tum.de)
 
 -- Copyright (c) 2024 Kagan Dikmen
@@ -82,31 +82,31 @@ begin
                 if ctr = 0 then
                     storage_unit(1)(0) <= "00000000";
                 else                
-                    tmp5                := ("00000000" & unsigned(overlap_buf1(7 downto 0))) + ("00000000" & unsigned(overlap_buf2(7 downto 0)));
-                    tmp6                := ("00000000" & unsigned(first_word_in    (7 downto 0))) + ("00000000" & unsigned(second_word_in    (7 downto 0)));
-                    storage_unit(1)(0)  <= std_logic_vector(tmp5(9 downto 2) + tmp6(9 downto 2));   
+                    tmp5                := ("00000000" & unsigned(overlap_buf1(7 downto 0))) + ("00000000" & unsigned(overlap_buf2(7 downto 0)))
+                                            + ("00000000" & unsigned(first_word_in    (7 downto 0))) + ("00000000" & unsigned(second_word_in    (7 downto 0)));
+                    storage_unit(1)(0)  <= std_logic_vector(tmp5(9 downto 2));   
                 end if;
                 
                 tmp7                := ("00000000" & unsigned(first_word_in    (31 downto 24)))  + ("00000000" & unsigned(second_word_in    (31 downto 24)));
                 storage_unit(1)(1)  <= std_logic_vector(tmp7(8 downto 1));
                 
-                tmp8                := ("00000000" & unsigned(first_word_in    (31 downto 24)))  + ("00000000" & unsigned(first_word_in     (23 downto 16)));
-                tmp9                := ("00000000" & unsigned(second_word_in    (31 downto 24)))  + ("00000000" & unsigned(second_word_in    (23 downto 16)));
-                storage_unit(1)(2)  <= std_logic_vector(tmp8(9 downto 2) + tmp9(9 downto 2));
+                tmp8                := ("00000000" & unsigned(first_word_in    (31 downto 24)))  + ("00000000" & unsigned(first_word_in     (23 downto 16)))
+                                        + ("00000000" & unsigned(second_word_in    (31 downto 24)))  + ("00000000" & unsigned(second_word_in    (23 downto 16)));
+                storage_unit(1)(2)  <= std_logic_vector(tmp8(9 downto 2));
                 
                 tmp10               := ("00000000" & unsigned(first_word_in    (23 downto 16)))  + ("00000000" & unsigned(second_word_in    (23 downto 16)));
                 storage_unit(1)(3)  <= std_logic_vector(tmp10(8 downto 1));
                 
-                tmp11               := ("00000000" & unsigned(first_word_in    (23 downto 16)))  + ("00000000" & unsigned(first_word_in     (15 downto 8)));
-                tmp12               := ("00000000" & unsigned(second_word_in    (23 downto 16)))  + ("00000000" & unsigned(second_word_in    (15 downto 8)));
-                storage_unit(1)(4)  <= std_logic_vector(tmp11(9 downto 2) + tmp12(9 downto 2));
+                tmp11               := ("00000000" & unsigned(first_word_in    (23 downto 16)))  + ("00000000" & unsigned(first_word_in     (15 downto 8)))
+                                        + ("00000000" & unsigned(second_word_in    (23 downto 16)))  + ("00000000" & unsigned(second_word_in    (15 downto 8)));
+                storage_unit(1)(4)  <= std_logic_vector(tmp11(9 downto 2));
                 
                 tmp13               := ("00000000" & unsigned(first_word_in    (15 downto 8)))  + ("00000000" & unsigned(second_word_in    (15 downto 8)));
                 storage_unit(1)(5)  <= std_logic_vector(tmp13(8 downto 1));
                 
-                tmp14               := ("00000000" & unsigned(first_word_in    (15 downto 8)))   + ("00000000" & unsigned(first_word_in     (7 downto 0)));
-                tmp15               := ("00000000" & unsigned(second_word_in    (15 downto 8)))   + ("00000000" & unsigned(second_word_in    (7 downto 0)));
-                storage_unit(1)(6)  <= std_logic_vector(tmp14(9 downto 2) + tmp15(9 downto 2));
+                tmp14               := ("00000000" & unsigned(first_word_in    (15 downto 8)))   + ("00000000" & unsigned(first_word_in     (7 downto 0)))
+                                        + ("00000000" & unsigned(second_word_in    (15 downto 8)))   + ("00000000" & unsigned(second_word_in    (7 downto 0)));
+                storage_unit(1)(6)  <= std_logic_vector(tmp14(9 downto 2));
                 
                 tmp16               := ("00000000" & unsigned(first_word_in    (7 downto 0)))    + ("00000000" & unsigned(second_word_in    (7 downto 0)));
                 storage_unit(1)(7)  <= std_logic_vector(tmp16(8 downto 1));
