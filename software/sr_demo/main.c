@@ -14,11 +14,15 @@
 #define SOURCE_HEIGHT 64
 
 #define CV          // comment if you want to run the base version
+// #define EVAL     // uncomment if you want to receive the cycle count at the end
 
 static struct uart uart0;
 
 // sequence to initiate data transfer
 uint8_t seq[4] = {0xAA, 0x55, 0xAA, 0x55};
+
+// converts integer to string, used in evaluation
+void int2str(char[], int);
 
 void exception_handler(uint32_t cause, void * epc, void * regbase)
 {
@@ -65,6 +69,15 @@ int main()
 		while(uart_rx_fifo_empty(&uart0));
 		*((volatile uint8_t*)(original_image + i)) = uart_rx(&uart0);
 	}
+
+    uint32_t hi1, lo, hi2;
+    do {
+        asm volatile("csrr %0, cycleh" : "=r"(hi1));
+        asm volatile("csrr %0, cycle"  : "=r"(lo));
+        asm volatile("csrr %0, cycleh" : "=r"(hi2));
+    } while (hi1 != hi2);
+
+    uint64_t start_cycle = ((uint64_t)hi1 << 32) | lo;
     
 #ifdef CV
     asm volatile("add x28, x0, %[a]"::[a] "r" (original_image):);
@@ -125,8 +138,45 @@ int main()
     }
 
 #endif
-    
+
+    do {
+        asm volatile("csrr %0, cycleh" : "=r"(hi1));
+        asm volatile("csrr %0, cycle"  : "=r"(lo));
+        asm volatile("csrr %0, cycleh" : "=r"(hi2));
+    } while (hi1 != hi2);
+
+    uint64_t end_cycle = ((uint64_t)hi1 << 32) | lo;
+
+    uint64_t elapsed = end_cycle - start_cycle;
+
     uart_tx_array(&uart0, enhanced_image_cropped, (SOURCE_WIDTH*2-1)*(SOURCE_HEIGHT*2-1));
 
+#ifdef EVAL
+    char duration[10];
+
+    int2str(duration, elapsed);
+
+    uart_tx_string(&uart0, duration);
+#endif
+
     return 0;
+}
+
+void int2str(char str[], int num)
+{
+    int i, rem, len = 0, n;
+ 
+    n = num;
+    while (n != 0)
+    {
+        len++;
+        n /= 10;
+    }
+    for (i = 0; i < len; i++)
+    {
+        rem = num % 10;
+        num = num / 10;
+        str[len - (i + 1)] = rem + '0';
+    }
+    str[len] = '\0';
 }
