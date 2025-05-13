@@ -23,3 +23,5 @@ develop/
 *.pb
 xsim.dir/
 
+#VS Code files:
+.vscode/
