@@ -1,8 +1,8 @@
 # Makefile for super-resolution demo
 # Created: 2024-08-30
-# Modified: 2024-09-01 (status: tested, working)
+# Modified: 2025-05-14 (status: tested, working)
 
-# Copyright (c) 2024 Kagan Dikmen
+# Copyright (c) 2025 Kagan Dikmen
 # See LICENSE for details
 
 .PHONY: all clean
@@ -33,7 +33,7 @@ start.o: ../start.S
 	$(TARGET_CC) -c -o $@ $(TARGET_CFLAGS) $<
 
 sendover:
-	cat sru_test.bin /dev/zero | head -c128k | pv -s 128k -L 14400 > $(PORT)
+	cat sru_test.bin /dev/zero | head -c512k | pv -s 512k -L 14400 > $(PORT)
 
 
 ###########################################
