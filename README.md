@@ -24,6 +24,12 @@ clairvoyant is:
 
 ![architecture_diagram](docs/cv/diagram/clairvoyant.drawio.svg)
 
+## Performance
+
+![square_images_plot](docs/cv/eval/square_matrices_plot_log.svg)
+
+![aspect_ratio_plot](docs/cv/eval/effect_of_image_aspect_ratio.svg)
+
 ## Setup
 
 Because the super-resolution functionality uses custom instructions, you need to use [clairvoyant's own custom RISC-V compiler](https://github.com/kagandikmen/clairvoyant-compiler), which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain).
