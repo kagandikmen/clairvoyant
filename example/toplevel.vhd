@@ -25,7 +25,7 @@ entity toplevel is
 		-- 4x LEDs        (bits 11 downto 8)
 		-- 4x Switches    (bits  7 downto 4)
 		-- 4x Buttons     (bits  3 downto 0)
-		gpio_pins : inout std_logic_vector(11 downto 0);
+		gpio_pins : inout std_logic_vector(1 downto 0);
 
 		-- UART0 signals:
 		uart0_txd : out std_logic;
@@ -152,7 +152,7 @@ architecture behaviour of toplevel is
 	signal aee_ram_ack_out : std_logic;
 
 	-- Main memory signals:
-	signal main_memory_adr_in  : std_logic_vector(16 downto 0);
+	signal main_memory_adr_in  : std_logic_vector(18 downto 0);
 	signal main_memory_dat_in  : std_logic_vector(31 downto 0);
 	signal main_memory_dat_out : std_logic_vector(31 downto 0);
 	signal main_memory_cyc_in  : std_logic;
@@ -194,8 +194,7 @@ begin
 					if processor_cyc_out = '1' then
 						intercon_busy <= true;
 
-						if processor_adr_out(31 downto 16) = x"0000"
-							or processor_adr_out(31 downto 16) = x"0001" then -- Main memory space
+						if processor_adr_out(31 downto 16) < x"0008" then -- Main memory space
 								intercon_peripheral <= PERIPHERAL_MAIN_MEMORY;
 						elsif processor_adr_out(31 downto 16) = x"c000" then -- Peripheral memory space
 							case processor_adr_out(15 downto 12) is
@@ -496,7 +495,7 @@ begin
 
 	main_memory: entity work.pp_soc_memory
 		generic map(
-			MEMORY_SIZE => 131072
+			MEMORY_SIZE => 524288
 		) port map(
 			clk => system_clk,
 			reset => reset,
