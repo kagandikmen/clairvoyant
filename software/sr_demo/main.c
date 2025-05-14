@@ -126,13 +126,23 @@ int main()
 
     int index = 0;
 
-    for(int i=0; i<2*SOURCE_HEIGHT-1; i++) {
-        for(int j=0; j<2*SOURCE_WIDTH-1; j++) {
+    for(size_t i=0; i<2*SOURCE_HEIGHT-1; i++) {
+        for(size_t j=0; j<2*SOURCE_WIDTH-1; j++) {
+
+            int pos = (i/2)*SOURCE_WIDTH+(j/2);
+
+            while(!uart_tx_fifo_empty(&uart0));
+
             if(i%2 == 0 && j%2 == 0) {
-                enhanced_image_cropped[index] = (original_image[(i/2)*SOURCE_WIDTH+(j/2)] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH]) >> 1;
+                enhanced_image[index] = original_image[pos];
+            } else if(i%2 == 0 && j%2 != 0) {
+                enhanced_image[index] = (original_image[pos] + original_image[pos+1]) >> 1;
+            } else if(i%2 != 0 && j%2 == 0) {
+                enhanced_image[index] = (original_image[pos] + original_image[pos+SOURCE_WIDTH]) >> 1;
             } else {
-                enhanced_image_cropped[index] = (original_image[(i/2)*SOURCE_WIDTH+(j/2)] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+1] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH] + original_image[(i/2)*SOURCE_WIDTH+(j/2)+SOURCE_WIDTH+1]) >> 2;
+                enhanced_image[index] = (original_image[pos] + original_image[pos+1] + original_image[pos+SOURCE_WIDTH] + original_image[pos+SOURCE_WIDTH+1]) >> 2;
             }
+
             index++;
         }
     }
