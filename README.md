@@ -1,9 +1,15 @@
 # clairvoyant
 
-clairvoyant is:
+*(not capitalized — it knows better than that)*
 
-- A RISC-V image super-resolution core built on [The Potato Processor](https://github.com/skordal/potato)
-- My FPGA Ignite 2024 Hackathon project
+**clairvoyant** is a RISC-V SoC extended with a custom 2× image upscaling accelerator that uses a hybrid nearest-neighbor and bilinear interpolation scheme. It is based on [The Potato Processor](https://github.com/skordal/potato).
+
+This repository includes:
+
+- A synthesizable hardware design of clairvoyant including its upscaling accelerator, SRU
+- A demo application showcasing how to develop sofware using the in-hardware image super-resolution functionality
+- Instructions and constraint files to build and run it on Xilinx ARTY A7 & PYNQ-Z1 FPGA boards
+- Example results, performance measurements, and documentation
 
 ## In Action
 
@@ -20,15 +26,19 @@ clairvoyant is:
 \
 \* Both images are cropped and resized with ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, it uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
 
-## Architecture
-
-![architecture_diagram](docs/cv/diagram/clairvoyant.drawio.svg)
-
 ## Performance
 
 ![square_images_plot](docs/cv/eval/square_matrices_plot_log.svg)
 
+**Figure 1:** Plot displaying how performance (in cycle counts) and acceleration (in percentage) offered by clairvoyant's in-hardware image super-resolution change for different image sizes. The enhanced images are all square and grayscale. For a simple 4x4 image, clairvoyant offers 38.4% acceleration over the base software implementation. As the image size increases, clairvoyant achieves upto 49.4% acceleration.
+
 ![aspect_ratio_plot](docs/cv/eval/effect_of_image_aspect_ratio.svg)
+
+**Figure 2:** Plot displaying how performance (in cycle counts) and acceleration (in percentage) offered by clairvoyant's in-hardware image super-resolution change for different image aspect ratios for any given image size. The enhanced images are all square and grayscale.
+
+## Architecture
+
+![architecture_diagram](docs/cv/diagram/clairvoyant.drawio.svg)
 
 ## Setup
 
@@ -36,11 +46,15 @@ Because the super-resolution functionality uses custom instructions, you need to
 
 ## Current Status of the Project
 
-Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2024-09-01.
+Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2025-05-14. The demo application in [software/sr_demo/](software/sr_demo/) can successfully enhance grayscale images with sizes upto 256x256.
 
 ### Next Steps
 
+- Measurement and documentation of clarvoyant's PSNR
+- Python code to generate the plots in [docs/cv/eval/](docs/cv/eval/)
+- Implementation of RGB superresolution in a dedicated demo application
 - Function libraries to facilitate access to the super-resolution functionality
+- README file for the demo
 
 ## Contributing
 
@@ -48,5 +62,5 @@ Pull requests, suggestions, bug fixes etc. are all welcome.
 
 ## License
 
-Both clairvoyant and The Potato Processor are released under BSD-3-Clause license. See [`LICENSE`](LICENSE) for details.
+Both clairvoyant and [The Potato Processor](https://github.com/skordal/potato) are released under BSD-3-Clause license. See [`LICENSE`](LICENSE) for details.
 
