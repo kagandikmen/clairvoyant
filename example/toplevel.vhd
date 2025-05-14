@@ -25,7 +25,7 @@ entity toplevel is
 		-- 4x LEDs        (bits 11 downto 8)
 		-- 4x Switches    (bits  7 downto 4)
 		-- 4x Buttons     (bits  3 downto 0)
-		gpio_pins : inout std_logic_vector(11 downto 0);
+		gpio_pins : inout std_logic_vector(1 downto 0);
 
 		-- UART0 signals:
 		uart0_txd : out std_logic;

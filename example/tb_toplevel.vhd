@@ -15,7 +15,7 @@ architecture testbench of tb_toplevel is
 
 	signal reset_n : std_logic := '0';
 
-	signal gpio_pins : std_logic_vector(11 downto 0);
+	signal gpio_pins : std_logic_vector(1 downto 0);
 
 	signal uart0_txd : std_logic;
 	signal uart0_rxd : std_logic := '1';
