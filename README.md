@@ -9,20 +9,20 @@ clairvoyant is:
 
 **Original Image**                     | **Image Enhanced w/ clairvoyant**
 :-------------------------------------:|:-------------------------------------:
-![birdie original](docs/birdie.png)    | ![birdie_enhanced](docs/birdie_enhanced.png)
+![birdie original](docs/cv/images/birdie.png)    | ![birdie_enhanced](docs/cv/images/birdie_enhanced.png)
 
 ### Closer Look*
 
 **Original Image** | **Image Enhanced w/ clairvoyant**
 :-------------------------------:|:-----------------------------------:
-![birdie resized closer look](docs/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/birdie_enhanced_closerlook.png)
+![birdie resized closer look](docs/cv/images/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/cv/images/birdie_enhanced_closerlook.png)
 
 \
 \* Both images are cropped and resized with ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, it uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
 
 ## Architecture
 
-![architecture_diagram](docs/clairvoyant.png)
+![architecture_diagram](docs/cv/diagram/clairvoyant.drawio.svg)
 
 ## Setup
 
