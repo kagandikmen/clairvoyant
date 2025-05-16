@@ -44,6 +44,26 @@ This repository includes:
 
 Because the super-resolution functionality uses custom instructions, you need to use [clairvoyant's own custom RISC-V compiler](https://github.com/kagandikmen/clairvoyant-compiler), which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain).
 
+## Tests
+
+You need to have Vivado installed on your machine to run the tests. There are also two standard packages needed. On Ubuntu, execute the following command before running the tests:
+
+```bash
+sudo apt install libncurses5 libtinfo5
+```
+
+Then you can continue with running the test using:
+
+```bash
+make
+```
+
+At the end, you can remove the generated test files by a simple:
+
+```bash
+make clean
+```
+
 ## Current Status of the Project
 
 Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2025-05-14. The demo application in [software/sr_demo/](software/sr_demo/) can successfully enhance grayscale images with sizes up to 256×256.
