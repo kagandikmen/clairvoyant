@@ -2,7 +2,7 @@
 
 *(not capitalized — it knows better than that)*
 
-**clairvoyant** is a RISC-V SoC extended with a custom 2× image upscaling accelerator that uses a hybrid nearest-neighbor and bilinear interpolation scheme. It is based on [The Potato Processor](https://github.com/skordal/potato).
+**clairvoyant** is a RISC-V SoC extended with a custom bilinear image upscaling accelerator. It is based on [The Potato Processor](https://github.com/skordal/potato).
 
 This repository includes:
 
@@ -24,7 +24,7 @@ This repository includes:
 ![birdie resized closer look](docs/cv/images/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/cv/images/birdie_enhanced_closerlook.png)
 
 \
-\* Both images are cropped and resized with ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter box` option for demonstration purposes. Otherwise, it uses its own image enhancement algorithm during resizing, which delivers a similar result to clairvoyant's but is purely software-based.
+\* Both images are cropped and resized with ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter Point` option for demonstration purposes, where it runs a simple nearest-neighbor resizing algorithm.
 
 ## Performance
 
