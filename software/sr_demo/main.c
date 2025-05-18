@@ -1,6 +1,6 @@
 // Demo program for the super-resolution functionality of clairvoyant
 // Created: 2024-08-21
-// Modified: 2025-05-14 (status: tested, working)
+// Modified: 2025-05-18 (status: tested, working)
 // Author: Kagan Dikmen (kagan.dikmen@tum.de)
 
 // Copyright (c) 2025, Kagan Dikmen
@@ -77,9 +77,8 @@ int main()
     uint64_t start_cycle = ((uint64_t)hi1 << 32) | lo;
     
 #ifdef CV
-    asm volatile("add x28, x0, %[a]"::[a] "r" (original_image):);
-    asm volatile("add x29, x0, %[a]"::[a] "r" (enhanced_image):);
-    
+    asm volatile("add x28, x0, %[a]"::[a] "r" (&original_image[SOURCE_WIDTH-4]):);
+    asm volatile("add x29, x0, %[a]"::[a] "r" (&enhanced_image[(2*SOURCE_WIDTH)-8]):);
     
     for(size_t i=0; i<SOURCE_HEIGHT; i++){
         asm volatile("ctrst");
@@ -92,25 +91,23 @@ int main()
                         "lf1 4(x29)\n\t"
                         "add x30, x29, %[b]\n\t"
                             "lf2 0(x30)\n\t"
-                        "lf3 4(x30)\n\t"
-                        "addi x28, x28, 0x4\n\t"
-                        "addi x29, x29, 0x8"
+                        "lf3 4(x30)"
                         ::
                         [a] "r" (SOURCE_WIDTH),
                         [b] "r" (2*SOURCE_WIDTH)
                         :); 
+            if(i==SOURCE_HEIGHT-1) {
+                asm volatile("lf0 0(x30)\n\t"
+                            "lf1 4(x30)");
+            }
+            asm volatile("addi x28, x28, -4\n\t"
+                        "addi x29, x29, -8");
         }
-        asm volatile("add x29, x29, %[a]"::[a] "r" (SOURCE_WIDTH*2));
+        asm volatile("add x28, x28, %[a]"::[a] "r" (2*SOURCE_WIDTH));
+        asm volatile("add x29, x29, %[a]"::[a] "r" (6*SOURCE_WIDTH));
     }
     
     int index = 0;
-
-    for(size_t i=0; i<(2*SOURCE_HEIGHT); i++) {
-        for(size_t j=0; j<(2*SOURCE_WIDTH-1); j++) {
-            enhanced_image[index] = enhanced_image[index+i+1];
-            index++;
-        }
-    }
 
 #else
 
@@ -133,6 +130,12 @@ int main()
                 enhanced_image[index] = (original_image[pos] + original_image[pos+1] + original_image[pos+SOURCE_WIDTH] + original_image[pos+SOURCE_WIDTH+1]) >> 2;
             }
 
+            if(j==2*SOURCE_WIDTH-1)
+                enhanced_image[index] = enhanced_image[index-1];
+
+            if(i==2*SOURCE_HEIGHT-1)
+                enhanced_image[index] = enhanced_image[index-2*SOURCE_WIDTH];
+
             index++;
         }
     }
@@ -152,8 +155,8 @@ int main()
     index = 0;
 
     // send the enhanced image through UART
-    for(size_t i=0; i<(2*SOURCE_HEIGHT-1); i++) {
-        for(size_t j=0; j<(2*SOURCE_WIDTH-1); j++) {
+    for(size_t i=0; i<(2*SOURCE_HEIGHT); i++) {
+        for(size_t j=0; j<(2*SOURCE_WIDTH); j++) {
             while(!uart_tx_fifo_empty(&uart0));
             uart_tx(&uart0, enhanced_image[index]);
             index++;
