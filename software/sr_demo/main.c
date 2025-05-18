@@ -14,6 +14,8 @@
 #define SOURCE_WIDTH 64
 #define SOURCE_HEIGHT 64
 
+#define APP_ENTRY (0x00000000)
+
 #define CV          // comment if you want to run the base version
 // #define EVAL     // uncomment if you want to receive the cycle count at the end
 
@@ -90,12 +92,12 @@ int main()
                         "lf0 0(x29)\n\t"
                         "lf1 4(x29)\n\t"
                         "add x30, x29, %[b]\n\t"
-                            "lf2 0(x30)\n\t"
+                        "lf2 0(x30)\n\t"
                         "lf3 4(x30)"
                         ::
                         [a] "r" (SOURCE_WIDTH),
                         [b] "r" (2*SOURCE_WIDTH)
-                        :); 
+                        :);
             if(i==SOURCE_HEIGHT-1) {
                 asm volatile("lf0 0(x30)\n\t"
                             "lf1 4(x30)");
@@ -172,6 +174,8 @@ int main()
     uart_tx_string(&uart0, duration);
     uart_tx_string(&uart0, "\n\r");
 #endif
+
+    goto *APP_ENTRY;
 
     return 0;
 }
