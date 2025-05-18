@@ -36,6 +36,14 @@ This repository includes:
 
 **Figure 2:** Plot displaying how performance (in cycle counts) and acceleration (in percentage) offered by clairvoyant's in-hardware image super-resolution change for different image aspect ratios for any given image size. The enhanced images are all square and grayscale.
 
+## Regeneration Quality
+
+To evaluate the quality of clairvoyant's image upscaling functionality, a standard degradation-restoration process is used. This technique involves downscaling the original picture to half its dimensions, and then upscaling it back using the upscaling algorithm being evaluated. The final result is then compared with the original.
+
+The PSNR (Peak Signal-to-Noise Ratio) and SSIM (Structural Similarity Index Measure) metrics of this evaluation, for different test images and downscaling techniques, are as follows for clairvoyant:
+
+![quality_metrics](docs/cv/quality_metrics/psnr_ssim.svg)
+
 ## Architecture
 
 ![architecture_diagram](docs/cv/diagram/clairvoyant.drawio.svg)
@@ -70,7 +78,6 @@ Tests on real hardware (AMD Zynq 7020 SoC on PYNQ-Z1) are completed as of 2025-0
 
 ### Next Steps
 
-- Measurement and documentation of clairvoyant's PSNR
 - Python code to generate the plots in [docs/cv/eval/](docs/cv/eval/)
 - Implementation of RGB superresolution in a dedicated demo application
 - Function libraries to facilitate access to the super-resolution functionality
