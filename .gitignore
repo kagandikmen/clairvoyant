@@ -1,4 +1,5 @@
 # Directories created/populated at build time:
+tests/
 tests-build/
 develop/
 
@@ -22,6 +23,10 @@ develop/
 *.prj
 *.pb
 xsim.dir/
+.Xil/
+
+# GHDL:
+*.cf
 
 #VS Code files:
 .vscode/

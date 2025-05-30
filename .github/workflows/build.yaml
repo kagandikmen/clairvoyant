@@ -14,6 +14,10 @@ jobs:
       - name: Build the toolchain
         run: |
           sudo ./.github/build-toolchain.sh
+                
+      - name: Set PATH
+        run: |
+          echo "/opt/cv32i/bin" >> "$GITHUB_PATH"
 
       - name: Run the tests
         run: |
