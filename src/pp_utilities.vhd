@@ -21,7 +21,7 @@ package pp_utilities is
 
 	-- Gets the value of the sel signals to the wishbone interconnect for the specified
 	-- operand size and address.
-	function wb_get_data_sel(size : in std_logic_vector(1 downto 0); address : in std_logic_vector)
+	function wb_get_data_sel(size : in std_logic_vector(1 downto 0); address : in std_logic_vector(31 downto 0))
 		return std_logic_vector;
 
 end package pp_utilities;
@@ -63,19 +63,19 @@ package body pp_utilities is
 		return retval;
 	end function log2;
 
-	function wb_get_data_sel(size : in std_logic_vector(1 downto 0); address : in std_logic_vector)
+	function wb_get_data_sel(size : in std_logic_vector(1 downto 0); address : in std_logic_vector(31 downto 0))
 		return std_logic_vector is
 	begin
 		case size is
 			when b"01" =>
 				case address(1 downto 0) is
-					when b"00" =>
+					when "00" =>
 						return b"0001";
-					when b"01" =>
+					when "01" =>
 						return b"0010";
-					when b"10" =>
+					when "10" =>
 						return b"0100";
-					when b"11" =>
+					when "11" =>
 						return b"1000";
 					when others =>
 						return b"0001";

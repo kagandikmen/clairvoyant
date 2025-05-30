@@ -38,7 +38,7 @@ architecture behaviour of pp_wb_adapter is
 
 	signal mem_r_ack : std_logic;
 
-	function get_data_shift(size : in std_logic_vector(1 downto 0); address : in std_logic_vector)
+	function get_data_shift(size : in std_logic_vector(1 downto 0); address : in std_logic_vector(31 downto 0))
 		return natural is
 	begin
 		case size is

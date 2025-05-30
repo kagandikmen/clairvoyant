@@ -5,37 +5,37 @@
 .PHONY: all clean potato.prj
 
 SOURCE_FILES := \
+	src/pp_types.vhd \
+	src/pp_constants.vhd \
+	src/pp_utilities.vhd \
 	src/pp_alu.vhd \
 	src/pp_alu_mux.vhd \
 	src/pp_alu_control_unit.vhd \
 	src/pp_icache.vhd \
 	src/pp_comparator.vhd \
-	src/pp_constants.vhd \
-	src/pp_control_unit.vhd \
-	src/pp_core.vhd \
-	src/pp_counter.vhd \
 	src/pp_csr.vhd \
+	src/pp_control_unit.vhd \
+	src/pp_counter.vhd \
 	src/pp_csr_unit.vhd \
 	src/pp_csr_alu.vhd \
+	src/pp_imm_decoder.vhd \
+	src/cv_sru.vhd \
 	src/pp_decode.vhd \
 	src/pp_execute.vhd \
 	src/pp_fetch.vhd \
-	src/pp_imm_decoder.vhd \
 	src/pp_memory.vhd \
-	src/pp_potato.vhd \
 	src/pp_register_file.vhd \
-	src/pp_types.vhd \
-	src/pp_utilities.vhd \
 	src/pp_wb_arbiter.vhd \
 	src/pp_wb_adapter.vhd \
 	src/pp_writeback.vhd \
-	src/cv_sru.vhd
+	src/pp_core.vhd \
+	src/pp_potato.vhd
 TESTBENCHES := \
+	soc/pp_soc_memory.vhd \
 	testbenches/tb_processor.vhd \
-	testbenches/tb_soc.vhd \
-	soc/pp_soc_memory.vhd
+	testbenches/tb_soc.vhd
 
-TOOLCHAIN_PREFIX ?= riscv32-unknown-elf
+TOOLCHAIN_PREFIX ?= /opt/cv32i/bin/riscv32-unknown-elf
 
 # ISA tests to use from the riscv-tests repository:
 RISCV_TESTS += \
@@ -86,13 +86,11 @@ TARGET_CFLAGS += -march=rv32i_zicsr -Wall -O0
 TARGET_LDFLAGS +=
 MODE ?=
 
-all: potato.prj run-tests run-soc-tests
+all: ghdl
 
-potato.prj:
-	-$(RM) potato.prj
-	for file in $(SOURCE_FILES) $(TESTBENCHES); do \
-		echo "vhdl work $$file" >> potato.prj; \
-	done
+vivado: clean potato.prj run-vivado-tests run-vivado-soc-tests
+
+ghdl: clean ghdl-add-sources run-ghdl-tests run-ghdl-soc-tests
 
 copy-riscv-tests:
 	test -d tests || mkdir tests
@@ -109,7 +107,56 @@ compile-tests: copy-riscv-tests
 		scripts/extract_hex.sh tests-build/$$test.elf tests-build/$$test-imem.hex tests-build/$$test-dmem.hex; \
 	done
 
-run-tests: potato.prj compile-tests
+
+# GHDL workflow
+
+ghdl-add-sources:
+	ghdl -a -fsynopsys $(SOURCE_FILES) $(TESTBENCHES)
+
+run-ghdl-tests: ghdl-add-sources compile-tests
+	for test in $(RISCV_TESTS) $(LOCAL_TESTS); do \
+		echo -ne "Running test $$test:\t"; \
+		DMEM_FILENAME="empty_dmem.hex"; \
+		test -f tests-build/$$test-dmem.hex && DMEM_FILENAME="tests-build/$$test-dmem.hex"; \
+		ghdl -e -fsynopsys tb_processor; \
+		ghdl -r -fsynopsys tb_processor -gIMEM_FILENAME="tests-build/$$test-imem.hex" -gDMEM_FILENAME=$$DMEM_FILENAME > tests-build/$$test.results; \
+		RESULT=$$(cat tests-build/$$test.results | awk '/\(report note\):/ {print}' | sed 's/(report note)://' | awk '/Success|Failure/ {print $$NF}'); \
+		echo "$$RESULT"; \
+		if [ "$(MODE)" = "ci" ] || [ "$(MODE)" = "CI" ]; then \
+			if echo "$$RESULT" | grep -q 'Failure'; then \
+				echo "Test $$test failed!"; \
+				exit 1; \
+			fi; \
+		fi; \
+	done
+
+run-ghdl-soc-tests: ghdl-add-sources compile-tests
+	for test in $(RISCV_TESTS) $(LOCAL_TESTS); do \
+		echo -ne "Running SOC test $$test:\t"; \
+		DMEM_FILENAME="empty_dmem.hex"; \
+		test -f tests-build/$$test-dmem.hex && DMEM_FILENAME="tests-build/$$test-dmem.hex"; \
+		ghdl -e -fsynopsys tb_soc; \
+		ghdl -r -fsynopsys tb_soc -gIMEM_FILENAME="tests-build/$$test-imem.hex" -gDMEM_FILENAME=$$DMEM_FILENAME > tests-build/$$test.results; \
+		RESULT=$$(cat tests-build/$$test.results | awk '/\(report note\):/ {print}' | sed 's/(report note)://' | awk '/Success|Failure/ {print $$NF}'); \
+		echo "$$RESULT"; \
+		if [ "$(MODE)" = "ci" ] || [ "$(MODE)" = "CI" ]; then \
+			if echo "$$RESULT" | grep -q 'Failure'; then \
+				echo "Test $$test failed!"; \
+				exit 1; \
+			fi; \
+		fi; \
+	done
+
+
+# Vivado workflow
+
+potato.prj:
+	-$(RM) potato.prj
+	for file in $(SOURCE_FILES) $(TESTBENCHES); do \
+		echo "vhdl work $$file" >> potato.prj; \
+	done
+
+run-vivado-tests: potato.prj compile-tests
 	for test in $(RISCV_TESTS) $(LOCAL_TESTS); do \
 		echo -ne "Running test $$test:\t"; \
 		DMEM_FILENAME="empty_dmem.hex"; \
@@ -126,7 +173,7 @@ run-tests: potato.prj compile-tests
 		fi; \
 	done
 
-run-soc-tests: potato.prj compile-tests
+run-vivado-soc-tests: potato.prj compile-tests
 	for test in $(RISCV_TESTS) $(LOCAL_TESTS); do \
 		echo -ne "Running SOC test $$test:\t"; \
 		DMEM_FILENAME="empty_dmem.hex"; \
@@ -143,6 +190,9 @@ run-soc-tests: potato.prj compile-tests
 		fi; \
 	done
 
+
+# Cleaning rules
+
 remove-xilinx-garbage:
 	-$(RM) -r xsim.dir 
 	-$(RM) xelab.* webtalk* xsim*
@@ -151,6 +201,7 @@ clean: remove-xilinx-garbage
 	for test in $(RISCV_TESTS); do $(RM) tests/$$test.S; done
 	-$(RM) -r tests-build
 	-$(RM) potato.prj
+	-$(RM) *.cf
 
 distclean: clean
 
