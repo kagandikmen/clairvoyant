@@ -24,7 +24,7 @@ This repository includes:
 ![birdie resized closer look](docs/cv/images/birdie_resized_closerlook.png) | ![birdie enhanced closer look](docs/cv/images/birdie_enhanced_closerlook.png)
 
 \
-\* Both images are cropped and resized with ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter Point` option for demonstration purposes, where it runs a simple nearest-neighbor resizing algorithm.
+\* Both images are cropped and resized using ImageMagick for a closer inspection of the results. ImageMagick was run with `-filter Point` option for demonstration purposes, where it runs a simple nearest-neighbor resizing algorithm.
 
 ## Performance
 
@@ -50,27 +50,32 @@ The PSNR (Peak Signal-to-Noise Ratio) and SSIM (Structural Similarity Index Meas
 
 ## Setup
 
-Because the super-resolution functionality uses custom instructions, you need to use [clairvoyant's own custom RISC-V compiler](https://github.com/kagandikmen/clairvoyant-compiler), which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain).
+Because the super-resolution functionality uses custom instructions, you need to use [clairvoyant-compiler](https://github.com/kagandikmen/clairvoyant-compiler), which is a slightly modified version of the [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain). To install clairvoyant-compiler on your host machine, please refer to [clairvoyant-compiler/README.md](https://github.com/kagandikmen/clairvoyant-compiler/blob/master/README.md).
 
 ## Tests
 
-You need to have Vivado installed on your machine to run the tests. There are also two standard packages needed. On Ubuntu, execute the following command before running the tests:
-
+GHDL needs to be installed on the host machine to run the unit tests for clairvoyant. Install GHDL by running:
 ```bash
-sudo apt install libncurses5 libtinfo5
+sudo apt install ghdl
 ```
-
-Then you can continue with running the test using:
-
+Then you can continue with running the unit tests using:
 ```bash
 make
 ```
-
-At the end, you can remove the generated test files by a simple:
-
+You can remove the test build and the runtime files by a simple:
 ```bash
 make clean
 ```
+
+The unit tests can also be performed using Vivado. To download Vivado, please see AMD's [Downloads](https://www.xilinx.com/support/download.html) portal for Vivado Design Suite. To run the unit tests using Vivado, libraries `libncurses5` and `libtinfo5` are also required, which can be installed through:
+```bash
+sudo apt install libncurses5 libtinfo5
+```
+Then you can continue by running:
+```bash
+make vivado
+```
+to execute the tests.
 
 ## Current Status of the Project
 
