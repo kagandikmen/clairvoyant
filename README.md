@@ -2,7 +2,7 @@
 
 *(not capitalized — it knows better than that)*
 
-**clairvoyant** is a RISC-V SoC extended with a custom bilinear image upscaling accelerator. It is based on [The Potato Processor](https://github.com/skordal/potato).
+**clairvoyant** is a RISC-V SoC with a custom bilinear image upscaling accelerator. It is based on [The Potato Processor](https://github.com/skordal/potato).
 
 This repository includes:
 
@@ -34,7 +34,7 @@ This repository includes:
 
 ![aspect_ratio_plot](docs/cv/eval/effect_of_image_aspect_ratio.svg)
 
-**Figure 2:** Plot displaying how performance (in cycle counts) and acceleration (in percentage) offered by clairvoyant's in-hardware image super-resolution change for different image aspect ratios for any given image size. The enhanced images are all square and grayscale.
+**Figure 2:** Plot displaying how performance (in cycle counts) and acceleration (in percentage) offered by clairvoyant's in-hardware image super-resolution change for different image aspect ratios for any given image size. The enhanced images are all grayscale.
 
 ## Regeneration Quality
 
